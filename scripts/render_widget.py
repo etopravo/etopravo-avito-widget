@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 import shutil
 from datetime import datetime, timezone
+
+CURRENT_YEAR = datetime.now(tz=timezone.utc).year
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -30,24 +32,29 @@ def enrich(reviews: list[dict]) -> list[dict]:
     for r in reviews:
         if not r.get("score"):
             continue
+        date_full = normalize_date(r.get("date") or "")
         out.append({
             **r,
             "score_int": int(r["score"]),
             "stars_full": range(int(r["score"])),
             "stars_empty": range(5 - int(r["score"])),
             "text": (r.get("text") or "").strip(),
-            "text_short": short_text(r.get("text") or "", 240),
-            "needs_more": len((r.get("text") or "").strip()) > 240,
+            "date_full": date_full,
+            "verified": (r.get("stage") or "") == "Сделка состоялась",
         })
     return out
 
 
-def short_text(text: str, limit: int) -> str:
-    text = text.strip()
-    if len(text) <= limit:
-        return text
-    cut = text[:limit].rsplit(" ", 1)[0]
-    return cut + "…"
+def normalize_date(date: str) -> str:
+    """Свежие отзывы Avito отдаёт без года — досыпаем текущий."""
+    date = date.strip()
+    if not date:
+        return ""
+    # уже с годом — оставляем как есть
+    parts = date.split()
+    if len(parts) >= 3 and parts[-1].isdigit():
+        return date
+    return f"{date} {CURRENT_YEAR}"
 
 
 def render() -> None:
