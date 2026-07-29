@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 */6 * * *"   # каждые 6 часов
   workflow_dispatch: {}      # можно запускать вручную из UI GitHub
+  push:                      # любой коммит в main → пересобрать и задеплоить
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/**"
+      - "requirements.txt"
 
 permissions:
   contents: write            # чтобы workflow мог коммитить
