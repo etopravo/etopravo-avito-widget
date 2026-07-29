@@ -125,13 +125,13 @@
   .avatar {
     width: 44px; height: 44px; border-radius: 50%;
     flex-shrink: 0;
-    background-color: #f1f3f5;
     background-size: cover;
     background-position: center;
     display: inline-flex; align-items: center; justify-content: center;
-    color: #6b7378;
-    font-weight: 600; font-size: 16px;
+    color: #ffffff;
+    font-weight: 600; font-size: 17px;
     overflow: hidden;
+    text-transform: uppercase;
   }
   .who { flex: 1; min-width: 0; }
   .who .name-row {
@@ -285,7 +285,7 @@
               {% if r.avatar %}
               <div class="avatar" style="background-image:url('{{ r.avatar }}')"></div>
               {% else %}
-              <div class="avatar">{{ (r.author or '?')[:1] | upper }}</div>
+              <div class="avatar" style="background:{{ r.avatar_color }}">{{ r.initial }}</div>
               {% endif %}
               <div class="who">
                 <div class="name-row">

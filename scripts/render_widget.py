@@ -26,6 +26,25 @@ def load() -> dict:
     return json.loads(DATA_PATH.read_text(encoding="utf-8"))
 
 
+AVATAR_PALETTE = [
+    "#e57373",  # red
+    "#f06292",  # pink
+    "#ba68c8",  # purple
+    "#9575cd",  # deep purple
+    "#7986cb",  # indigo
+    "#64b5f6",  # blue
+    "#4fc3f7",  # light blue
+    "#4dd0e1",  # cyan
+    "#4db6ac",  # teal
+    "#81c784",  # green
+    "#aed581",  # light green
+    "#ffb74d",  # orange
+    "#ff8a65",  # deep orange
+    "#a1887f",  # brown
+    "#90a4ae",  # blue grey
+]
+
+
 def enrich(reviews: list[dict]) -> list[dict]:
     """Оставляем только отзывы с оценкой, готовим поля для рендера."""
     out = []
@@ -33,6 +52,10 @@ def enrich(reviews: list[dict]) -> list[dict]:
         if not r.get("score"):
             continue
         date_full = normalize_date(r.get("date") or "")
+        author = (r.get("author") or "?").strip()
+        # детерминированный цвет: по id (стабильно при перегенерации)
+        seed = int(r.get("id") or abs(hash(author)))
+        avatar_color = AVATAR_PALETTE[seed % len(AVATAR_PALETTE)]
         out.append({
             **r,
             "score_int": int(r["score"]),
@@ -41,6 +64,8 @@ def enrich(reviews: list[dict]) -> list[dict]:
             "text": (r.get("text") or "").strip(),
             "date_full": date_full,
             "verified": (r.get("stage") or "") == "Сделка состоялась",
+            "initial": author[:1].upper(),
+            "avatar_color": avatar_color,
         })
     return out
 
