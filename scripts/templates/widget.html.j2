@@ -266,9 +266,9 @@
           <svg viewBox="0 0 20 20" fill="var(--star-empty)"><path d="M10 1l2.6 5.9 6.4.6-4.9 4.4 1.5 6.3L10 15l-5.6 3.2 1.5-6.3L1 7.5l6.4-.6L10 1z"/></svg>
         {% endfor %}
       </div>
-      <div class="avito-logo">
+      <a class="avito-logo" href="https://www.avito.ru/brands/etopravo" target="_blank" rel="noopener" aria-label="Профиль на Авито">
         {% include "avito-logo-inline.svg" %}
-      </div>
+      </a>
       <div class="count">На основе {{ total }} {{ 'оценки' if total % 10 == 1 and total % 100 != 11 else 'оценок' }}</div>
     </div>
     <a class="cta" href="{{ leave_url }}" target="_blank" rel="noopener">Оставить отзыв</a>
@@ -321,9 +321,9 @@
             <span class="read-more" onclick="toggle(this)">Читать полностью</span>
 
             <div class="review-foot">
-              <div class="avito-logo sm">
+              <a class="avito-logo sm" href="https://www.avito.ru/brands/etopravo" target="_blank" rel="noopener" aria-label="Профиль на Авито">
                 {% include "avito-logo-inline.svg" %}
-              </div>
+              </a>
             </div>
           </article>
         </div>
@@ -340,11 +340,6 @@
       </button>
       <div class="progress"><div class="progress-bar" id="bar"></div></div>
     </div>
-  </div>
-
-  <div class="footer">
-    <span>Обновлено: {{ updated_at }}</span>
-    <a href="https://www.avito.ru/brands/etopravo" target="_blank" rel="noopener">Профиль на Авито →</a>
   </div>
 
 </div>
