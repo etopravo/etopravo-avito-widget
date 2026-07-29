@@ -21,9 +21,10 @@
         <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>0</integer></dict>
     </array>
 
-    <!-- если мак был выключен во время запуска — запустится сразу после включения -->
+    <!-- запускается сразу при старте мака / после пробуждения / при перезагрузке —
+         гарантирует свежие отзывы даже если мак долго был выключен -->
     <key>RunAtLoad</key>
-    <false/>
+    <true/>
 
     <key>StandardOutPath</key>
     <string>/Users/ruslankaev/etopravo-avito-widget/data/launchd.log</string>
