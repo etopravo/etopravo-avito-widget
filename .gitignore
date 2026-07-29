@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .DS_Store
 /tmp/
+data/last-run.log
+data/launchd.log
+data/launchd.err.log

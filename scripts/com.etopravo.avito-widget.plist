@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.etopravo.avito-widget</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>/Users/ruslankaev/etopravo-avito-widget/scripts/local_update.sh</string>
+    </array>
+
+    <!-- запуск каждые 6 часов: 03:00, 09:00, 15:00, 21:00 по локальному времени -->
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>3</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
+
+    <!-- если мак был выключен во время запуска — запустится сразу после включения -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ruslankaev/etopravo-avito-widget/data/launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/ruslankaev/etopravo-avito-widget/data/launchd.err.log</string>
+</dict>
+</plist>

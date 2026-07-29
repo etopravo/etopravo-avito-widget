@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 
 from curl_cffi import requests as curl_requests
+from curl_cffi.requests.exceptions import HTTPError as CurlHTTPError
 
 SELLER_ID = "82f01ddee3ca0ba1e640be54f3f4efa4"
 IMPERSONATE = "chrome131"
@@ -94,7 +95,7 @@ def main() -> int:
             print(f"[fetch] page={page + 1} offset={offset}", flush=True)
             try:
                 data = fetch_page(session, offset)
-            except curl_requests.HTTPError as exc:
+            except CurlHTTPError as exc:
                 status = getattr(exc.response, "status_code", "?")
                 print(f"[error] HTTP {status} at offset={offset}", flush=True)
                 if status in (429, 403):
