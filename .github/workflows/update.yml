@@ -1,0 +1,68 @@
+name: Update reviews
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # каждые 6 часов
+  workflow_dispatch: {}      # можно запускать вручную из UI GitHub
+
+permissions:
+  contents: write            # чтобы workflow мог коммитить
+
+concurrency:
+  group: update-reviews
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Fetch reviews from Avito
+        run: python scripts/fetch_reviews.py
+
+      - name: Render widget
+        run: python scripts/render_widget.py
+
+      - name: Commit updated files
+        run: |
+          git config user.name  "avito-reviews-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/reviews.json web/widget.html web/reviews.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+          git commit -m "chore(reviews): auto-update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
+
+  # Публикация папки web/ на GitHub Pages
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - id: deployment
+        uses: actions/deploy-pages@v4

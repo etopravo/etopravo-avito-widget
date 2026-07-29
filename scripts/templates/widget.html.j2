@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Отзывы с Авито — Качкаев и Партнёры</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text: #1a1f23;
+    --text-muted: #6b7378;
+    --bg: #ffffff;
+    --card-bg: #f7f8f9;
+    --border: #e6e8ea;
+    --accent: #1b6b3a;
+    --mint: #b7d2b9;
+    --star: #ff8a00;
+    --star-empty: #e2e5e8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { padding: 16px 18px 24px; max-width: 1100px; margin: 0 auto; }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rating {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-weight: 700;
+  }
+  .rating .num { font-size: 28px; }
+  .rating .of { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+  .stars-big { display: inline-flex; gap: 2px; }
+  .stars-big svg { width: 18px; height: 18px; }
+  .count {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .cta {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background .15s ease;
+  }
+  .cta:hover { background: #144d29; }
+  .list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 720px) {
+    .list { grid-template-columns: 1fr 1fr; }
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--mint);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .who .name { font-weight: 600; }
+  .who .meta { font-size: 12px; color: var(--text-muted); }
+  .stars {
+    display: inline-flex;
+    gap: 1px;
+    margin-left: auto;
+  }
+  .stars svg { width: 14px; height: 14px; }
+  .service {
+    display: inline-block;
+    margin: 6px 0 8px;
+    padding: 3px 8px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .text.collapsed .full { display: none; }
+  .text.expanded .short { display: none; }
+  .more {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+  }
+  .text.expanded .more { }
+  .footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="rating">
+      <span class="stars-big">
+        {% for _ in range(avg | int) %}
+          <svg viewBox="0 0 20 20" fill="var(--star)"><path d="M10 1l2.6 5.9 6.4.6-4.9 4.4 1.5 6.3L10 15l-5.6 3.2 1.5-6.3L1 7.5l6.4-.6L10 1z"/></svg>
+        {% endfor %}
+        {% for _ in range(5 - (avg | int)) %}
+          <svg viewBox="0 0 20 20" fill="var(--star-empty)"><path d="M10 1l2.6 5.9 6.4.6-4.9 4.4 1.5 6.3L10 15l-5.6 3.2 1.5-6.3L1 7.5l6.4-.6L10 1z"/></svg>
+        {% endfor %}
+      </span>
+      <span class="num">{{ avg }}</span>
+      <span class="of">из 5</span>
+    </div>
+    <div class="count">{{ total }} {{ 'отзыв' if total % 10 == 1 and total % 100 != 11 else 'отзыва' if total % 10 in [2,3,4] and total % 100 not in [12,13,14] else 'отзывов' }} на Авито</div>
+    <a class="cta" href="{{ leave_url }}" target="_blank" rel="noopener">Оставить отзыв</a>
+  </div>
+
+  <div class="list">
+    {% for r in reviews %}
+    <div class="card">
+      <div class="card-head">
+        <div class="avatar" {% if r.avatar %}style="background-image:url('{{ r.avatar }}')"{% else %}>{{ (r.author or '?')[:1] | upper }}{% endif %}></div>
+        <div class="who">
+          <div class="name">{{ r.author or 'Клиент' }}</div>
+          <div class="meta">{{ r.date }}{% if r.role %} · {{ r.role }}{% endif %}</div>
+        </div>
+        <div class="stars" aria-label="{{ r.score_int }} из 5">
+          {% for _ in r.stars_full %}
+            <svg viewBox="0 0 20 20" fill="var(--star)"><path d="M10 1l2.6 5.9 6.4.6-4.9 4.4 1.5 6.3L10 15l-5.6 3.2 1.5-6.3L1 7.5l6.4-.6L10 1z"/></svg>
+          {% endfor %}
+          {% for _ in r.stars_empty %}
+            <svg viewBox="0 0 20 20" fill="var(--star-empty)"><path d="M10 1l2.6 5.9 6.4.6-4.9 4.4 1.5 6.3L10 15l-5.6 3.2 1.5-6.3L1 7.5l6.4-.6L10 1z"/></svg>
+          {% endfor %}
+        </div>
+      </div>
+      {% if r.service %}<div class="service">{{ r.service }}</div>{% endif %}
+      <div class="text {% if r.needs_more %}collapsed{% endif %}" data-full="{{ r.text }}">
+        {% if r.needs_more %}
+          <span class="short">{{ r.text_short }}</span>
+          <span class="full">{{ r.text }}</span>
+          <span class="more" onclick="toggle(this)">Читать полностью</span>
+        {% else %}
+          <span>{{ r.text }}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="footer">
+    <span>Обновлено: {{ updated_at }}</span>
+    <a href="https://www.avito.ru/brands/etopravo" target="_blank" rel="noopener">Все отзывы на Авито →</a>
+  </div>
+
+</div>
+
+<script>
+function toggle(el){
+  const wrap = el.parentElement;
+  const expanded = wrap.classList.toggle('expanded');
+  wrap.classList.toggle('collapsed', !expanded);
+  el.textContent = expanded ? 'Свернуть' : 'Читать полностью';
+}
+</script>
+</body>
+</html>
