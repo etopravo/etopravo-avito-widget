@@ -45,6 +45,15 @@ def enrich(reviews: list[dict]) -> list[dict]:
     return out
 
 
+def compute_avg(rating_stat: list[dict]) -> float:
+    """Считаем средний рейтинг из распределения оценок (API отдаёт только округлённое до целого)."""
+    total_score = sum((r.get("score") or 0) * (r.get("count") or 0) for r in rating_stat)
+    total_count = sum((r.get("count") or 0) for r in rating_stat)
+    if not total_count:
+        return 0.0
+    return round(total_score / total_count, 1)
+
+
 def normalize_date(date: str) -> str:
     """Свежие отзывы Avito отдаёт без года — досыпаем текущий."""
     date = date.strip()
@@ -69,11 +78,16 @@ def render() -> None:
     tpl = env.get_template("widget.html.j2")
     updated_at = datetime.fromtimestamp(payload["updatedAt"], tz=timezone.utc)
 
+    avg = compute_avg(summary.get("ratingStat") or [])
+    total = summary.get("reviewCount") or len(reviews)
+
     html = tpl.render(
         reviews=reviews,
         summary=summary,
-        avg=summary.get("score") or 0,
-        total=summary.get("reviewCount") or len(reviews),
+        avg=avg,                                    # дробное число, напр. 4.8
+        avg_str=f"{avg:.1f}".replace(".", ","),     # для отображения: "4,8"
+        avg_stars_full=int(round(avg)),             # для звёзд-иконок
+        total=total,
         leave_url=LEAVE_REVIEW_URL,
         updated_at=updated_at.strftime("%Y-%m-%d %H:%M UTC"),
     )
